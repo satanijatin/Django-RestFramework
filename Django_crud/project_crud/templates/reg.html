@@ -1,0 +1,185 @@
+{% load custom_tag %}
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Registartion Form</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  </head>
+        <h1 align="center">Student Registration</h1>
+<body>
+
+    <div class="container">
+      
+    
+      <form action="{% url 'reg' %}" method="post" enctype="multipart/form-data" >
+        {% csrf_token %}
+        <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+
+        <a href="{% url 'viewalldata' %}" class="btn btn-primary">View All Data</a>
+        <label for="department">Department:{{user.department}}</label>
+        <input type="hidden" name="form_type" value="insert"  />
+        <input type="hidden" name="user_id" value="{{ select_user.id }}"  />
+        <div class="form-group">
+            <label for="email">Name:</label>
+            <input type="text" class="form-control" id="uname" value="{{ select_user.uname }}" placeholder="Enter name" name="uname">
+          </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="text" class="form-control" id="email" value="{{ select_user.email }}" placeholder="Enter email" name="email">
+        </div>
+        <div class="form-group">
+          <label for="pwd">Password:</label>
+          <input type="password" class="form-control" id="password" value="{{ select_user.password }}" placeholder="Enter password" name="password">
+        </div>
+        <div class="form-group">
+            <label for="pwd">Gender:</label>
+            <input type="radio" value="Male" name="gender" value="Male" {% if select_user.gender == 'Male' %} checked {% endif %}>Male
+            <input type="radio" value="Female" name="gender" value="Female" {% if select_user.gender == 'Female' %} checked {% endif %}> Female 
+        </div>
+       
+        <div class="form-group">
+        <label for="">Languages</label>
+       
+        <input type="checkbox" value="Gujarati" name="lng" value="Gujarati" {% if select_user.lang|isExists:'Gujarati' %}  checked {% endif %}> Gujarati
+        <input type="checkbox" value="Hindi" name="lng" value="Hindi" {% if select_user.lang|isExists:'Hindi' %}  checked {% endif %}> Hindi
+        <input type="checkbox" value="English" name="lng" value="English" {% if select_user.lang|isExists:'English' %}  checked {% endif %}> English 
+     
+        </div>
+
+        <div class="form-group">
+            <label for="">Country</label>
+            <select name="country" id="country">
+                <option value="India" {% if select_user.country|isExists:'India'  %} selected {% endif %}>India</option>
+                <option value="USA" {% if select_user.country|isExists:'USA'  %} selected {% endif %}>USA</option>
+                <option value="Canada" {% if select_user.country|isExists:'Canada'  %} selected {% endif %}>Canada</option>
+            </select>
+    
+        </div>
+        <div class="form-group">
+            <input type="file" name="img" onchange="loadFile(event)">
+            {% if action == 'edit' and select_user.img != "" %}
+
+                <img src="{{ select_user.img.url }}" alt="img1" id ="output" height="200px" width="200px">
+              
+              {% else %}
+              <img  src="/media/images/defaultimg.png" alt="img"  id="output" height="200px" width="200px" >
+            {% endif %} 
+           
+        </div>
+        <div  class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="reset" class="btn btn-primary ">Clear</button>
+        </div>
+        
+      </form>
+    </div>
+    
+   
+   
+   
+   <div class="container" >
+
+    <div class="row">
+        <form method="post" id="search_frm" >
+        {% csrf_token %}
+        <input type="hidden" name="pageno" id="pageno" />
+        <input type="hidden" name="form_type" value="search" />
+        <div class="col-md-4 m-auto">
+         
+          <div  class="form-group">
+            <input type="text" class="form-control" placeholder="Search Name" name="uname" value="{{uname}}" onkeyup="searchwithfilter(1)">
+        </div>
+ 
+      
+       </div>
+        <div class="col-md-4 m-auto">
+          
+            <div  class="form-group">
+                <input type="text" class="form-control" placeholder="Search Email" name="email" value="{{email}}" onkeyup="searchwithfilter(1)">
+              </div>
+    
+        </div>
+        <button type="button" class="btn btn-primary" onclick="searchwithfilter(1)">Submit</button>
+        <button type="button" class="btn btn-primary" onclick="searchwithfilter(1,'resetbtn')">Reset</button>
+
+      </form>
+         
+      <h2 align="center">Student Table</h2>
+          
+      <div id="viewtable">
+                             
+      </div>
+     
+    </div>
+  </div>
+</body>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    searchwithfilter(1)
+   });
+
+  function searchwithfilter(page,action)
+  {
+
+    if(action=="resetbtn")
+    {
+      $(':input','#search_frm')
+      .not(':button, :submit, :reset, :hidden')
+      .val('')
+      .prop('checked', false)
+      .prop('selected', false);
+     
+    }
+   
+      $("#pageno").val(page);
+      var frm = document.getElementById('search_frm'); 
+      var f1 = new FormData(frm);
+      $.ajax({
+         url:"{% url 'reg' %}",
+         type:"post",
+         data:f1,
+         processData:false,
+         contentType:false,
+         success: function(response)
+         {
+            $('#viewtable').html(response);
+         }
+      });
+    
+     
+  }
+</script>
+
+
+{% comment %} <script>
+  function searchwithfilter(page){
+   
+    $("#pageno").val(page);
+    $("#search_frm").submit();
+
+  }
+</script>
+<script>
+  function resetbtn(page){
+    $(':input','#search_frm')
+            .not(':button, :submit, :reset, :hidden')
+            .val('')
+            .prop('checked', false)
+            .prop('selected', false);
+    $("#pageno").val(page);
+    $("#search_frm").submit(); {% endcomment %}
+
+  {% comment %} }
+</script> {% endcomment %}
+
+
+</html>
