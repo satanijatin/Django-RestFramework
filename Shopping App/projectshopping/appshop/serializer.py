@@ -71,11 +71,7 @@ class CartSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
             product_id = attrs['product'].pk
             qty = attrs['qty']
-            # user_id = attrs['user'].pk
-            # user=User.objects.get(id=user_id)
-            
-            # if user is not None:
-                
+                           
             total_qty_added = Cart.objects.filter(product=product_id).aggregate(Sum('qty'))
             if total_qty_added['qty__sum'] is not None:
                    
@@ -89,8 +85,7 @@ class CartSerializer(serializers.ModelSerializer):
                     return attrs
             else:
                     raise serializers.ValidationError("quntity not added")
-            # else:
-            #     raise serializers.ValidationError("user not exist")
+          
                     
         
      
