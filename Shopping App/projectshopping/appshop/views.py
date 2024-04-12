@@ -12,6 +12,18 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.authtoken.models import Token
 
 # Create your views here.
+from django.http import HttpResponse
+from .utils import *
+
+def sendmails(request):
+    sendemailto()
+    return HttpResponse("Email Send Successfully....")
+
+
+def sendmailattach(request):
+    filepath = f"{settings.BASE_DIR}/index.txt"
+    mail_with_file(filepath)
+    return HttpResponse("mail sent...")
 
 def index(request):
     return render(request,"index.html")
