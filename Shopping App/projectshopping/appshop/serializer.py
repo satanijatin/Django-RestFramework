@@ -61,11 +61,9 @@ class CartSerializer(serializers.ModelSerializer):
              select_cart1.qty = qty
              select_cart1.save()
         else:
-                        
              select_cart= Cart.objects.create(qty=qty,
                                                 user_id=user_id,
-                                                product_id=product_id)
-                        
+                                                product_id=product_id)      
         return select_cart              
                     
     def validate(self, attrs):
@@ -74,9 +72,7 @@ class CartSerializer(serializers.ModelSerializer):
                            
             total_qty_added = Cart.objects.filter(product=product_id).aggregate(Sum('qty'))
             if total_qty_added['qty__sum'] is not None:
-                   
-                    qty1 = int(total_qty_added['qty__sum']) + qty
-                    
+                    qty1 = int(total_qty_added['qty__sum']) + qty  
             else:
                     qty1 = qty
                

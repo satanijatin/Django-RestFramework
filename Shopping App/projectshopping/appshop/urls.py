@@ -34,7 +34,8 @@ urlpatterns = [
     path('category/',CategoryAPI.as_view()),
     path('cart/',CartAPI.as_view()),
     path('sendmails',views.sendmails),
-    path('sendmailattach',views.sendmailattach)
+    path('sendmailattach',views.sendmailattach),
+ 
 ]
 
 if settings.DEBUG:

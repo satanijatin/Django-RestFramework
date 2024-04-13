@@ -15,6 +15,9 @@ from rest_framework.authtoken.models import Token
 from django.http import HttpResponse
 from .utils import *
 
+
+
+
 def sendmails(request):
     sendemailto()
     return HttpResponse("Email Send Successfully....")
