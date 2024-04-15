@@ -15,8 +15,19 @@ from rest_framework.authtoken.models import Token
 from django.http import HttpResponse
 from .utils import *
 
-
-
+import razorpay
+client = razorpay.Client(auth=("rzp_test_TcB90zzqqI6XPz", "TXzCOQpzUzUXTtYdMA1RLgGN"))
+def payments(request):
+    if request.method=="POST":
+        
+        datas=request.POST
+        amount=datas.get('amount')
+        data = { "amount": amount, "currency": "INR", "receipt": "order_rcptid_11" }
+        p = client.order.create(data=data)   
+        print(p)
+        return render(request,'index.html',{'data':p})
+    else:
+        return render(request,'demo2.html')
 
 def sendmails(request):
     sendemailto()
@@ -29,7 +40,7 @@ def sendmailattach(request):
     return HttpResponse("mail sent...")
 
 def index(request):
-    return render(request,"index.html")
+    return render(request,"demo.html")
 
 
 class RegisterUser(APIView):
@@ -152,3 +163,14 @@ class CartAPI(APIView):
               return Response({"message":"Cart Delete"})
         except Exception as e:
             return Response({"message":"Id not found"})
+
+
+# from rest_framework import generics
+# class BookAPIGeneric1(generics.ListAPIView,generics.CreateAPIView):
+#      queryset = Book.objects.all()
+#      serializer_class=BookSerializer
+
+# class BookAPIGeneric(generics.DestroyAPIView,generics.UpdateAPIView):
+#      queryset = Book.objects.all()
+#      serializer_class=BookSerializer
+#      lookup_field='id'

@@ -35,6 +35,8 @@ urlpatterns = [
     path('cart/',CartAPI.as_view()),
     path('sendmails',views.sendmails),
     path('sendmailattach',views.sendmailattach),
+    path('payments',views.payments)
+
  
 ]
 

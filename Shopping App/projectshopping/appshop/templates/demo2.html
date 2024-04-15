@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method="post">
+
+        {% csrf_token %}
+          <div class="form-group">
+              <label for="pwd">Enter Amount:</label>
+              <input type="text" class="form-control"   placeholder="Enter Amount" name="amount">
+            </div>
+          <input type="submit" value="Pay with Razorpay"/>
+      </form>
+</body>
+</html>
