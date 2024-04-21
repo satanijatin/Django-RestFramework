@@ -27,8 +27,7 @@ def loginpage(request):
 
          
         user =  authenticate(username=username,password=password)
-        
-       
+               
         if user is None:
             messages.info(request,"Invalid credentials")
             return redirect('login')

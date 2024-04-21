@@ -15,8 +15,9 @@
 
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
+       
         var options = {
-            "key": "rzp_test_TcB90zzqqI6XPz", // Enter the Key ID generated from the Dashboard
+            "key": "rzp_test_6BBob6BVLs9q3l", // Enter the Key ID generated from the Dashboard
             "amount": "{{data.amount}}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
             "currency": "INR",
             "name": "Acme Corp",
@@ -31,7 +32,7 @@
             "prefill": {
                 "name": "Gaurav Kumar",
                 "email": "gaurav.kumar@example.com",
-                "contact": "9000090000"
+                "contact": "98795412563"
             },
             "notes": {
                 "address": "Razorpay Corporate Office"
@@ -54,7 +55,7 @@
          
         } {% endcomment %}
         rzp1.open();
-        e.preventDefault();
+       
     </script>
 </body>
 

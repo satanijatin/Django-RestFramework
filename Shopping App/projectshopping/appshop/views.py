@@ -16,12 +16,24 @@ from django.http import HttpResponse
 from .utils import *
 
 import razorpay
-client = razorpay.Client(auth=("rzp_test_TcB90zzqqI6XPz", "TXzCOQpzUzUXTtYdMA1RLgGN"))
+
+
+
+client = razorpay.Client(auth=("rzp_test_6BBob6BVLs9q3l", "wONlzuWE9t9PkIrySlEqCrWm"))
+
+def pay(request):
+    data = { "amount": 50000, "currency": "INR", "receipt": "order_rcptid_11" }
+    p = client.order.create(data=data)   
+    
+    return render(request,'indexs.html',{'data':p})
+
 def payments(request):
     if request.method=="POST":
         
         datas=request.POST
         amount=datas.get('amount')
+        amount=float(amount)*100
+        
         data = { "amount": amount, "currency": "INR", "receipt": "order_rcptid_11" }
         p = client.order.create(data=data)   
         print(p)
