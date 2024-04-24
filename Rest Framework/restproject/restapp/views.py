@@ -3,7 +3,8 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-
+from rest_framework.decorators import api_view
+from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import Student
@@ -42,8 +43,8 @@ class StudentAPI(APIView):
     # authentication_classes = [JWTAuthentication]
     # permission_classes = [IsAuthenticated]
     
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
     
     
     authentication_classes = [TokenAuthentication]
@@ -431,3 +432,51 @@ class AreaAPI(APIView):
               return Response({"message":"Area Delete"})
         except Exception as e:
             return Response({"message":"Id not found"})
+        
+        
+        
+
+# class BookAPIGeneric1(generics.ListAPIView,generics.CreateAPIView):
+#      queryset = Book.objects.all()
+#      serializer_class=BookSerializer
+
+# class BookAPIGeneric(generics.DestroyAPIView,generics.UpdateAPIView):
+#      queryset = Book.objects.all()
+#      serializer_class=BookSerializer
+#      lookup_field='id'
+
+
+# @api_view(['GET'])
+# def index(request):
+#     studentdata = Student.objects.all()
+#     seralizer = StudentSerealizer(studentdata,many=True)
+#     return Response({'apidata':seralizer.data})
+
+# @api_view(['POST'])
+# def add_student(request):
+#     data = request.data 
+#     sdata =  StudentSerealizer(data=request.data)
+
+#     if not sdata.is_valid():
+#         return Response({'status':'202','errors':sdata.errors,'message':"something went wrong"})
+    
+#     sdata.save()
+    
+#     return Response({"data":sdata.data,"message":"Student inserted"})
+
+# @api_view(['PUT'])
+# def update_student(request,id):
+#     sdata = Student.objects.get(id=id)
+#     sdata =  StudentSerealizer(sdata,request.data)
+
+#     if not sdata.is_valid():
+#         return Response({'status':'202','errors':sdata.errors,'message':"something went wrong"})  
+    
+#     sdata.save()
+#     return Response({"data":sdata.data,"message":"Student Updated"})
+
+# @api_view(['DELETE'])
+# def delete_student(request,id):
+#       sdata = Student.objects.get(id=id)
+#       sdata.delete()
+#       return Response({"message":"Student Updated"})
