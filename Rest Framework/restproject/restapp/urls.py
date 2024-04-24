@@ -41,6 +41,9 @@ urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('getaccesstoken/', GetAccessTokenView.as_view(), name='get-access-token'),
+     # path('addStudent',views.add_student),
+    # path('updateStudent/<id>',views.update_student),
+    # path('deleteStudent/<id>',views.delete_student)
     #   path("book-generic/",BookAPIGeneric1.as_view(),name="bookgeneric"),
     # path("book-generic/<id>",BookAPIGeneric.as_view(),name="bookgeneric1")
 ]
