@@ -82,6 +82,42 @@ class StudentAPI(APIView):
               return Response({"message":"Student Delete"})
         except Exception as e:
             return Response({"message":"Id not found"})
+        
+        
+        
+class demoapi(APIView):
+    def get(self,request):
+        sdata=Student.objects.all()
+        sss1=StudentSerealizer(sdata,many=True)
+        return Response({"status":200,"apidata":sss1.data})
+    
+    def post(self,request):
+        sss=StudentSerealizer(data=request.data)
+        if not sss.is_valid():
+             return Response({"message":"Id not found"})
+         
+        sss.save()
+        return Response({'status':'202','data':sss.data,'message':"something went wrong"})
+    def put(self,request):
+        try:
+            ssdata=Student.objects.get(id=request.data['id'])
+            sss=StudentSerealizer(ssdata,request.data)
+            if not sss.is_valid():
+                    return Response({'status':'202','errors':sss.errors,'message':"something went wrong"})  
+            
+            sss.save()
+            return Response({"data":sss.data,"message":"Product Updated"})
+        except Exception as e:
+            return Response({"message":"Id not found"})
+    
+    def delete(self,request):
+        try:
+            pdata=Student.objects.get(id=request.data['id'])
+            pdata.delete()
+            return Response({"message":"Product Delete"})
+        except Exception as e:
+            return Response({"message":"Id not found"})
+         
 
 
 class ProductAPI(APIView):
