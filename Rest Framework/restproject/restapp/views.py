@@ -14,6 +14,22 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.authtoken.models import Token
 
 
+class AgeAPI(APIView):
+  
+
+    def post(self,request):
+            authdata =  AgeSerializer(data=request.data,partial=True)
+            if not authdata.is_valid():
+                return Response({'status':'202','errors':authdata.errors,'message':"something went wrong"})
+            authdata.save()
+            # date=request.data['age']
+            # year=date.split('/')
+            
+            # age = 2024 - int(year[2])
+            return Response({"data":authdata.data,"message":"Sucess"})
+        # return Response({"data":authdata.data,"message":f" You Age is: {age}"})
+
+
 # Create your views here.
 
 class GetAccessTokenView(APIView):

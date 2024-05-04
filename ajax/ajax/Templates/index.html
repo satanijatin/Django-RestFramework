@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+
+        $(document).ready(function () {
+            viewData();
+            $("#up_btn").hide()
+        })
+
+        const viewData = () => {
+
+            var row = "";
+            $.get('display', {}, function (rt) {
+
+                for (var r in rt.data) {
+                    row = row + "<tr><td>" + rt.data[r].id + "</td><td>" + rt.data[r].uname + "</td><td>" + rt.data[r].email + "</td><td>" + rt.data[r].phone + "</td><td><button onclick='deleteData(" + rt.data[r].id + ")'>Delete</button></td><td><button onclick='editData(" + rt.data[r].id + ")'>Update</button></td></tr>"
+                }
+                $("#tdata").html(row)
+
+            })
+
+        }
+
+        const deleteData = (uid) => {
+            $.get("delete", { uid }, function (rt) {
+                alert(rt)
+                viewData()
+            })
+        }
+
+        const editData = (uid) => {
+            $.get("edit", { uid }, function (rt) {
+                $("#id").val(rt.udata[0].id)
+                $("#uname").val(rt.udata[0].uname)
+                $("#email").val(rt.udata[0].email)
+                $("#phone").val(rt.udata[0].phone)
+
+                $("#up_btn").show()
+                $("#sm_btn").hide()
+            })
+        }
+
+
+        const addData = () => {
+
+            var uname = $("#uname").val()
+            var email = $("#email").val()
+            var phone = $("#phone").val()
+            var csrfmiddlewaretoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
+
+            $.post('adduser', { uname, email, phone, csrfmiddlewaretoken }, function (rt) {
+                alert(rt)
+                viewData()
+                $("#uname").val("")
+                $("#email").val("")
+                $("#phone").val("")
+            })
+        }
+
+        const updateData = () => {
+            var id = $("#id").val()
+            var uname = $("#uname").val()
+            var email = $("#email").val()
+            var phone = $("#phone").val()
+            var csrfmiddlewaretoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
+
+            $.post('update', { id, uname, email, phone, csrfmiddlewaretoken }, function (rt) {
+                alert(rt)
+                viewData()
+                $("#uname").val("")
+                $("#email").val("")
+                $("#phone").val("")
+                $("#up_btn").hide()
+                $("#sm_btn").show()
+            })
+        }
+
+        const search = (data) => {
+            var row = "";
+            $.get('search', { data }, function (rt) {
+
+                for (var r in rt.data) {
+                    row = row + "<tr><td>" + rt.data[r].id + "</td><td>" + rt.data[r].uname + "</td><td>" + rt.data[r].email + "</td><td>" + rt.data[r].phone + "</td><td><button onclick='deleteData(" + rt.data[r].id + ")'>Delete</button></td><td><button onclick='editData(" + rt.data[r].id + ")'>Update</button></td></tr>"
+                }
+                $("#tdata").html(row)
+
+            })
+        }
+
+    </script>
+</head>
+
+<body>
+
+    <table border="1" align="center">
+        {%csrf_token%}
+        <input type="hidden" name="id" id="id">
+        <tr>
+            <td>Username</td>
+            <td><input type="text" name="uname" id="uname" /></td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td><input type="text" name="email" id="email" /></td>
+        </tr>
+
+        <tr>
+            <td>Phone</td>
+            <td><input type="text" name="phone" id="phone" /></td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td><button onclick="addData()" id="sm_btn">Submit</button>
+                <button onclick="updateData()" id="up_btn">Update</button>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <br>
+    <table border="1" align="center">
+        <tr>
+            <td><input type="text" name="search" id="search" placeholder="Search..." onkeyup="search(value)"></td>
+        </tr>
+    </table>
+    <table border="1" align="center">
+
+        <tr>
+            <th>Id</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th colspan="2">Action</th>
+        </tr>
+        <tbody id="tdata">
+
+        </tbody>
+    </table>
+
+</body>
+
+</html>

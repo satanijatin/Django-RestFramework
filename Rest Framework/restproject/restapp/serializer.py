@@ -2,6 +2,80 @@ from rest_framework import serializers
 from .models import *
 from django.contrib.auth.models import User
 
+from datetime import date, timedelta
+
+from django.utils import timezone
+import datetime
+
+
+class AgeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Age
+        fields= '__all__'
+        
+    # def create(self, validated_data):
+        
+    #     dates=validated_data['age']
+    #     year=dates.split('/')
+    #     yys=year[2]
+        
+    #     mms=year[1]
+    #     dds=year[0]
+    #     ages = datetime.date(int(yys), int(mms), int(dds))
+    #     today = datetime.date.today()
+    #     age = (today - ages) // datetime.timedelta(days=365.2425)
+    #     user = Age.objects.create(age=dates,agecalc=f"Your Age is {age}")
+    #     user.save()
+    #     return user
+    
+    def create(self, validated_data):
+            
+        dates=validated_data['age']
+        year=dates.split('/')
+        yys=year[2]
+        
+        mms=year[1]
+        dds=year[0]
+        ages = datetime.date(int(yys), int(mms), int(dds))
+        
+        today = datetime.date.today()
+        age = today - ages
+        years = age.days // 365
+        months = (age.days % 365) // 30
+        days = (age.days % 365) % 30
+        # today = datetime.date.today()
+        # age = (today - ages) // datetime.timedelta(days=365.2425)
+        # print(f"Age: {years} years, {months} months, {days} days")
+
+        user = Age.objects.create(age=dates,agecalc=f"Your Age is {years} years, {months} months, {days} days")
+        user.save()
+        return user
+    
+    
+    #   def create(self, validated_data):
+            
+    #     date=validated_data['age']
+   
+    #     year=date.split('/')
+     
+    #     age = 2024 - int(year[2])
+    #     user = Age.objects.create(age=date,agecalc=f"Your Age is {age}")
+    #     user.save()
+    #     return user
+    
+    # def to_representation(self, instance):
+    #     data = super().to_representation(instance)
+        
+       
+    #     selected_fields = {
+    #         'age': instance.age,
+           
+           
+    #     }
+    #     data.update(selected_fields)
+
+    #     return data
+        
 
 class UserSeralizer(serializers.ModelSerializer):
     class Meta:
@@ -56,6 +130,8 @@ class UserSeralizer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+    
+    
     
     
 class AuthorSerializer(serializers.ModelSerializer):

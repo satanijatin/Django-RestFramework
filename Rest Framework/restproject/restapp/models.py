@@ -7,7 +7,10 @@ class Student(models.Model):
     email =  models.CharField(max_length=20)
     age = models.IntegerField()
     
-
+class Age(models.Model):
+       age = models.CharField(max_length=20)
+       agecalc=models.CharField(max_length=20)
+    
 
 class Category(models.Model):
     catname = models.CharField(max_length=20)
