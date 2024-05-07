@@ -45,7 +45,7 @@ class AgeSerializer(serializers.ModelSerializer):
         days = (age.days % 365) % 30
         # today = datetime.date.today()
         # age = (today - ages) // datetime.timedelta(days=365.2425)
-        # print(f"Age: {years} years, {months} months, {days} days")
+        print(f"Age: {years} years, {months} months, {days} days")
 
         user = Age.objects.create(age=dates,agecalc=f"Your Age is {years} years, {months} months, {days} days")
         user.save()

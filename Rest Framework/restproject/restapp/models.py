@@ -9,7 +9,7 @@ class Student(models.Model):
     
 class Age(models.Model):
        age = models.CharField(max_length=20)
-       agecalc=models.CharField(max_length=20)
+       agecalc=models.CharField(max_length=200)
     
 
 class Category(models.Model):
