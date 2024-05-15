@@ -14,6 +14,19 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.authtoken.models import Token
 
 
+
+from rest_framework import generics, mixins
+from .models import Person
+
+
+class PersonCreate(mixins.CreateModelMixin, generics.GenericAPIView):
+    queryset = Person.objects.all()
+    serializer_class = PersonSerializer
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+    
+    
 class AgeAPI(APIView):
   
 

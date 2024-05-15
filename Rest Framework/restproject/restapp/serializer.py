@@ -8,6 +8,24 @@ from django.utils import timezone
 import datetime
 
 
+
+
+
+class PersonSerializer(serializers.ModelSerializer):
+    age = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Person
+        fields = ['id', 'name', 'birthdate', 'age']
+
+    def get_age(self, obj):
+        from datetime import datetime
+        birthdate = datetime.strptime(obj.birthdate, '%Y-%m-%d')
+        today = datetime.today()
+        age = today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))
+        return f"Your age is {age}"
+
+
 class AgeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Age
